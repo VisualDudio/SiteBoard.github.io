@@ -20,5 +20,14 @@
   },
   "engines": {
     "node": "4.1.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VisualDudio/visualdudio.github.io.git"
+  },
+  "bugs": {
+    "url": "https://github.com/VisualDudio/visualdudio.github.io/issues"
+  },
+  "homepage": "https://github.com/VisualDudio/visualdudio.github.io"
 }
