@@ -3,7 +3,7 @@ var app = express();
 var port = Number(process.env.PORT || 3000);
 var server = app.listen(port);
 
-app.use(express.static('public'));
+app.use(express.static(__dirname));
 console.log("My socket server is running");
 
 var socket = require('socket.io');
