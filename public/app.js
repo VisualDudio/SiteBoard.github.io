@@ -59,7 +59,7 @@ $(document).ready(function() {
         if (document.getElementById('chat-window').style.height != "40px")
             document.getElementById('chat-window').style.height = "40px";
         else
-            document.getElementById('chat-window').style.height = "382px";
+            document.getElementById('chat-window').style.height = "371px";
     });
 
     $('.editable').on('click', function() {
@@ -70,7 +70,7 @@ $(document).ready(function() {
 
         $editable.data("editing", true);
         var h4 = $("h4", this);
-        var input = $('<input />').val(h4.text())
+        var input = $('<input style="font-size:1em; margin-top: 2px; margin-left: 3px; font-weight: bold;"/>').val(h4.text());
 
         h4.after(input);
         h4.hide();
@@ -131,7 +131,7 @@ $(document).ready(function() {
     socket.on('eraser', function() {
         context.globalCompositeOperation = "destination-out";
         context.strokeStyle = "rgba(0,0,0,1)";
-        context.lineWidth = (m_size + 4) * 2;
+        context.lineWidth = (m_size) * 2;
     });
 });
 
@@ -144,7 +144,7 @@ function itemClick(e) {
         case 'item-eraser':
             context.globalCompositeOperation = "destination-out";
             context.strokeStyle = "rgba(0,0,0,1)";
-            context.lineWidth = (m_size + 4) * 2;
+            context.lineWidth = (m_size) * 2;
             socket.emit('eraser');
             break;
         case 'item-color-blue':
