@@ -101,7 +101,7 @@ $(document).ready(function() {
         }
     })
 
-    socket = io.connect('http://localhost:3000');
+    socket = io.connect('https://siteboard.herokuapp.com/');
 
     socket.on('mouse', drawPoint);
 

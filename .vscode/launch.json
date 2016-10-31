@@ -5,7 +5,7 @@
             "name": "Launch Chrome against localhost, with sourcemaps",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:3000",
+            "url": "https://siteboard.herokuapp.com/",
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}"
         },
