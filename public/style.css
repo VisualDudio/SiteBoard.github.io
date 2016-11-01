@@ -66,7 +66,7 @@ body {
 }
 
 .chat-bubble {
-    margin: 5px 5px 5px 20px;
+    margin: 5px 5px 5px 5px;
     padding: 5px;
     border-radius: 6px;
     background-color: #eee;

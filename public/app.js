@@ -201,9 +201,11 @@ function createChatBubble(data, isClient = false) {
     var chatBubble = document.createElement('div');
     chatBubble.className = "chat-bubble";
     if (isClient) {
-        //TODO: Add more differentiability between client and non-client chat bubbles. Also add names
         chatBubble.style.backgroundColor = "#3dc476";
+        chatBubble.style.cssFloat = "left";
     }
+    else
+        chatBubble.style.cssFloat = "right";
 
     document.getElementById("chat-output").appendChild(chatBubble);
     var bubbleInfo = document.createElement('div');
