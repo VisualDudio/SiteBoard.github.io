@@ -202,10 +202,10 @@ function createChatBubble(data, isClient = false) {
     chatBubble.className = "chat-bubble";
     if (isClient) {
         chatBubble.style.backgroundColor = "#3dc476";
-        chatBubble.style.cssFloat = "left";
+        chatBubble.style.cssFloat = "right";
     }
     else
-        chatBubble.style.cssFloat = "right";
+        chatBubble.style.cssFloat = "left";
 
     document.getElementById("chat-output").appendChild(chatBubble);
     var bubbleInfo = document.createElement('div');
