@@ -122,7 +122,7 @@ $(document).ready(function() {
         }
     })
 
-    socket = io.connect('http://siteboard.herokuapp.com');
+    socket = io.connect('https://siteboard.herokuapp.com');
 
     socket.on('mouse', drawPoint);
     socket.on('disengage', function() {
