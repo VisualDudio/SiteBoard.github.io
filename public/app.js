@@ -40,6 +40,27 @@ $(document).ready(function() {
 
     $('.item').click(itemClick);
 
+    $('.color').click(function(e) {
+        document.getElementById("item-eraser").style.backgroundColor = "white";
+        var elements = document.getElementsByClassName('color');
+        Array.prototype.forEach.call(elements, function(element, index) {
+            if (element.id === e.target.id)
+                element.style.border = "2pt solid dimgray";
+            else
+                element.style.border = "";
+        });
+    });
+
+    $('.size').click(function(e) {
+        var elements = document.getElementsByClassName('size');
+        Array.prototype.forEach.call(elements, function(element, index) {
+            if (element.id === e.target.id)
+                element.style.backgroundColor = "lightgray";
+            else
+                element.style.backgroundColor = "white";
+        });
+    });
+
     $('#chat-input').keydown(function(e) {
         if (e.keyCode == 13 && document.getElementById("chat-input").value != "") {
             var date = new Date();
@@ -101,15 +122,13 @@ $(document).ready(function() {
         }
     })
 
-    socket = io.connect('https://siteboard.herokuapp.com/');
+    socket = io.connect('http://siteboard.herokuapp.com');
 
     socket.on('mouse', drawPoint);
-
     socket.on('disengage', function() {
         isDragging = false;
         context.beginPath();
     });
-
     socket.on('chat message', createChatBubble);
 
     socket.on('clear', function() {
@@ -124,13 +143,13 @@ $(document).ready(function() {
     });
 
     socket.on('size', function(size) {
-        m_size = size;
+         m_size = size;
         context.lineWidth = m_size * 2;
     });
 
     socket.on('eraser', function() {
         context.globalCompositeOperation = "destination-out";
-        context.strokeStyle = "rgba(0,0,0,1)";
+        context.strokeStyle = "rbga(0, 0, 0, 1)";
         context.lineWidth = (m_size) * 2;
     });
 });
@@ -142,6 +161,16 @@ function itemClick(e) {
             socket.emit('clear');
             break;
         case 'item-eraser':
+            if (e.target.style.backgroundColor === "lightgray")
+                e.target.style.backgroundColor = "white";
+            else
+                e.target.style.backgroundColor = "lightgray";
+            
+            var elements = document.getElementsByClassName('color');
+            Array.prototype.forEach.call(elements, function(element, index) {
+                    element.style.border = "";
+            });
+
             context.globalCompositeOperation = "destination-out";
             context.strokeStyle = "rgba(0,0,0,1)";
             context.lineWidth = (m_size) * 2;
@@ -201,10 +230,10 @@ function createChatBubble(data, isClient = false) {
     var chatBubble = document.createElement('div');
     chatBubble.className = "chat-bubble";
     if (isClient) {
+        //TODO: Add more differentiability between client and non-client chat bubbles.
         chatBubble.style.backgroundColor = "#3dc476";
         chatBubble.style.cssFloat = "right";
-    }
-    else
+    } else
         chatBubble.style.cssFloat = "left";
 
     document.getElementById("chat-output").appendChild(chatBubble);
