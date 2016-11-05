@@ -129,10 +129,11 @@ $(document).ready(function() {
         isDragging = false;
         context.beginPath();
     });
+
     socket.on('chat message', createChatBubble);
 
-    socket.on('clear', function() {
-        context.clearRect(0, 0, canvas.width, canvas.height);
+    socket.on('clear', function () {
+            context.clearRect(0, 0, canvas.width, canvas.height);
     });
 
     socket.on('color', function(color) {
@@ -143,14 +144,14 @@ $(document).ready(function() {
     });
 
     socket.on('size', function(size) {
-         m_size = size;
-        context.lineWidth = m_size * 2;
+        m_size = size;
+        context.lineWidth = m_size *2;
     });
 
     socket.on('eraser', function() {
         context.globalCompositeOperation = "destination-out";
-        context.strokeStyle = "rbga(0, 0, 0, 1)";
-        context.lineWidth = (m_size) * 2;
+        context.strokeStyle = "rgba(0, 0, 0, 1)";
+        context.lineWidth = m_size * 2;
     });
 });
 
@@ -233,8 +234,11 @@ function createChatBubble(data, isClient = false) {
         //TODO: Add more differentiability between client and non-client chat bubbles.
         chatBubble.style.backgroundColor = "#3dc476";
         chatBubble.style.cssFloat = "right";
-    } else
+        chatBubble.style.marginLeft = (document.getElementById("chat-window").style.width - chatBubble.style.width).toString() + "px";
+    } else {
         chatBubble.style.cssFloat = "left";
+        chatBubble.style.marginRight = (document.getElementById("chat-window").style.width - chatBubble.style.width).toString() + "px";
+    }
 
     document.getElementById("chat-output").appendChild(chatBubble);
     var bubbleInfo = document.createElement('div');
