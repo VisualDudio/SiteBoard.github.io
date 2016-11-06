@@ -22,18 +22,6 @@ $(document).ready(function() {
 
     $('#canvas').mousedown(engage);
 
-    $('#canvas').mousemove(function(e) {
-        if (isDragging) {
-            var data = {
-                x: e.clientX,
-                y: e.clientY
-            }
-            socket.emit('mouse', data);
-
-            drawPoint(data);
-        }
-    });
-
     $('#canvas').mouseup(disengage);
 
     $('#canvas').mouseleave(disengage);
@@ -231,7 +219,6 @@ function createChatBubble(data, isClient = false) {
     var chatBubble = document.createElement('div');
     chatBubble.className = "chat-bubble";
     if (isClient) {
-        //TODO: Add more differentiability between client and non-client chat bubbles.
         chatBubble.style.backgroundColor = "#3dc476";
         chatBubble.style.cssFloat = "right";
         chatBubble.style.marginLeft = (300 - chatBubble.style.minWidth).toString() + "px";
