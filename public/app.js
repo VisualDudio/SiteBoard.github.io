@@ -124,6 +124,8 @@ $(document).ready(function() {
     socket = io.connect('https://siteboard.herokuapp.com');
 
     socket.on('mouse', drawPoint);
+    
+    socket.on('eraser-mouse', drawPoint(true));
 
     socket.on('disengage', function() {
         isDragging = false;
@@ -264,8 +266,10 @@ function engage(e) {
     socket.emit('mouse', data);
 
     drawPoint(data, true);
-    if (clientContext.globalCompositeOperation == "destination-out")
-        drawPoint(data, false);
+    if (clientContext.globalCompositeOperation == "destination-out") {
+         drawPoint(data, false);
+         socket.emit('eraser-mouse', data);
+    }
 }
 
 function disengage() {

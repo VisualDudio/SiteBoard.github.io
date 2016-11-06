@@ -16,6 +16,10 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.emit('mouse', data);
     });
 
+    socket.on('eraser-mouse', function (data) {
+        socket.broadcast.emit('eraser-mouse', data);
+    });
+
     socket.on('disengage', function () {
         socket.broadcast.emit('disengage');
     });
