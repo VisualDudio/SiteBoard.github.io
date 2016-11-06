@@ -263,8 +263,6 @@ function engage(e) {
 function disengage() {
     isDragging = false;
     clientContext.beginPath();
-
-    socket.emit('disengage');
 }
 
 function drawPoint(data, isClient = false) {
