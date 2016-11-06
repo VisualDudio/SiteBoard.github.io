@@ -128,6 +128,7 @@ $(document).ready(function() {
     socket.on('disengage', function() {
         isDragging = false;
         clientContext.beginPath();
+        console.log("server disengaged");
     });
 
     socket.on('chat message', createChatBubble);
@@ -252,7 +253,7 @@ function engage(e) {
 function disengage() {
     isDragging = false;
     clientContext.beginPath();
-
+    console.log("disengaged");
     socket.emit('disengage');
 }
 
