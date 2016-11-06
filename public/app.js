@@ -134,6 +134,7 @@ $(document).ready(function() {
 
     socket.on('clear', function() {
         clientContext.clearRect(0, 0, canvas.width, canvas.height);
+        serverContext.clearRect(0, 0, serverCanvas.width, serverCanvas.height);
     });
 });
 
@@ -141,6 +142,7 @@ function itemClick(e) {
     switch (e.target.id) {
         case 'item-trash':
             clientContext.clearRect(0, 0, canvas.width, canvas.height);
+            serverContext.clearRect(0, 0, serverCanvas.width, serverCanvas.height);
             socket.emit('clear');
             break;
         case 'item-eraser':
