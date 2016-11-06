@@ -131,6 +131,10 @@ $(document).ready(function() {
     });
 
     socket.on('chat message', createChatBubble);
+
+    socket.on('clear', function() {
+        clientContext.clearRect(0, 0, canvas.width, canvas.height);
+    });
 });
 
 function itemClick(e) {
@@ -147,7 +151,7 @@ function itemClick(e) {
             
             var elements = document.getElementsByClassName('color');
             Array.prototype.forEach.call(elements, function(element, index) {
-                    element.style.border = "";
+                element.style.border = "";
             });
 
             clientContext.globalCompositeOperation = "destination-out";
