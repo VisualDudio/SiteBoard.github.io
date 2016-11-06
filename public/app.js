@@ -171,6 +171,10 @@ function itemClick(e) {
             clientContext.globalCompositeOperation = "destination-out";
             clientContext.strokeStyle = "rgba(0,0,0,1)";
             clientContext.lineWidth = (m_size) * 2;
+
+            serverContext.globalCompositeOperation = "destination-out";
+            serverContext.strokeStyle = "rgba(0,0,0,1)";
+            serverContext.lineWidth = (m_size) * 2;
             socket.emit('eraser');
             break;
         case 'item-color-blue':
