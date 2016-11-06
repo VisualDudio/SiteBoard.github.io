@@ -171,50 +171,42 @@ function itemClick(e) {
             serverContext.globalCompositeOperation = "destination-out";
             serverContext.strokeStyle = "rgba(0,0,0,1)";
             serverContext.lineWidth = (m_size) * 2;
-            socket.emit('eraser');
             break;
         case 'item-color-blue':
             clientContext.globalCompositeOperation = "source-over";
             m_color = "#0000cd";
             clientContext.strokeStyle = m_color;
             clientContext.fillStyle = m_color;
-            socket.emit('color', m_color);
             break;
         case 'item-color-red':
             clientContext.globalCompositeOperation = "source-over";
             m_color = "#b22222";
             clientContext.strokeStyle = m_color;
             clientContext.fillStyle = m_color;
-            socket.emit('color', m_color);
             break;
         case 'item-color-green':
             clientContext.globalCompositeOperation = "source-over";
             m_color = "#228b22";
             clientContext.strokeStyle = m_color;
             clientContext.fillStyle = m_color;
-            socket.emit('color', m_color);
             break;
         case 'item-color-black':
             clientContext.globalCompositeOperation = "source-over";
             m_color = "#000000";
             clientContext.strokeStyle = m_color;
             clientContext.fillStyle = m_color;
-            socket.emit('color', m_color);
             break;
         case 'item-size-1':
             m_size = 2;
             clientContext.lineWidth = m_size * 2;
-            socket.emit('size', m_size);
             break;
         case 'item-size-2':
             m_size = 4;
             clientContext.lineWidth = m_size * 2;
-            socket.emit('size', m_size);
             break;
         case 'item-size-3':
             m_size = 6;
             clientContext.lineWidth = m_size * 2;
-            socket.emit('size', m_size);
             break;
     }
 }
