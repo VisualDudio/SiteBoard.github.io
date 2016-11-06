@@ -119,10 +119,6 @@ $(document).ready(function() {
     socket = io.connect('https://siteboard.herokuapp.com');
 
     socket.on('mouse', drawPoint);
-    socket.on('disengage', function() {
-        isDragging = false;
-        clientContext.beginPath();
-    });
 
     socket.on('chat message', createChatBubble);
 
@@ -276,7 +272,7 @@ function drawPoint(data, isClient = false) {
         clientContext.lineTo(data.x, data.y);
         clientContext.stroke();
         clientContext.beginPath();
-        clientContext.arc(data.x, data.y, m_size, 0, Math.PI * 2);
+        clientContext.arc(data.x, data.y, clientContext.lineWidth, 0, Math.PI * 2);
         clientContext.fill();
         clientContext.beginPath();
         clientContext.moveTo(data.x, data.y);
@@ -289,7 +285,7 @@ function drawPoint(data, isClient = false) {
         serverContext.lineTo(data.x, data.y);
         serverContext.stroke();
         serverContext.beginPath();
-        serverContext.arc(data.x, data.y, m_size, 0, Math.PI * 2);
+        serverContext.arc(data.x, data.y, serverContext.lineWidth, 0, Math.PI * 2);
         serverContext.fill();
         serverContext.beginPath();
         serverContext.moveTo(data.x, data.y);
