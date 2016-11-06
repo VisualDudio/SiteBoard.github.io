@@ -258,9 +258,6 @@ function engage(e) {
     socket.emit('mouse', data);
 
     drawPoint(data, true);
-    if (clientContext.globalCompositeOperation == "destination-out") {
-         drawPoint(data, false);
-    }
 }
 
 function disengage() {
