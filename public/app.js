@@ -119,12 +119,37 @@ $(document).ready(function() {
     socket = io.connect('https://siteboard.herokuapp.com');
 
     socket.on('mouse', drawPoint);
+
     socket.on('disengage', function() {
         isDragging = false;
         clientContext.beginPath();
     });
 
     socket.on('chat message', createChatBubble);
+
+    
+    
+    socket.on('clear', function () {
+        clientContext.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
+    socket.on('color', function(color) {
+        clientContext.globalCompositeOperation = "source-over";
+        clientContext.strokeStyle = color;
+        clientContext.fillStyle = color;
+        m_color = color;
+    });
+
+    socket.on('size', function(size) {
+        m_size = size;
+        clientContext.lineWidth = m_size * 2;
+    });
+
+    socket.on('eraser', function() {
+        clientContext.globalCompositeOperation = "destination-out";
+        clientContext.strokeStyle = "rgba(0, 0, 0, 1)";
+        clientContext.lineWidth = m_size * 2;
+    });
 });
 
 function itemClick(e) {
@@ -259,7 +284,7 @@ function drawPoint(data, isClient = false) {
     }
     else {
         serverContext = data.z;
-        
+
         serverContext.lineTo(data.x, data.y);
         serverContext.stroke();
         serverContext.beginPath();
