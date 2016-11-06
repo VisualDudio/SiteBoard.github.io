@@ -3,17 +3,18 @@ var isDragging = false;
 var canvas;
 var m_size = 2;
 var m_color = '#000000';
-var context;
+var clientContext, serverContext;
 
 function init() {
     canvas = document.getElementById("canvas");
-    context = canvas.getContext('2d');
+    clientContext = canvas.getContext('2d');
+    serverContext = canvas.getContext('2d');
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    context.lineWidth = m_size * 2;
-    context.strokeStyle = m_color;
-    context.fillStyle = m_color;
+    clientContext.lineWidth = m_size * 2;
+    clientContext.strokeStyle = m_color;
+    clientContext.fillStyle = m_color;
 }
 
 $(document).ready(function() {
@@ -21,6 +22,11 @@ $(document).ready(function() {
     window.addEventListener('resize', init, false);
 
     $('#canvas').mousedown(engage);
+
+    $('#canvas').mousemove(function(e) {
+        if (isDragging)
+            engage(e);
+    });
 
     $('#canvas').mouseup(disengage);
 
@@ -115,38 +121,38 @@ $(document).ready(function() {
     socket.on('mouse', drawPoint);
     socket.on('disengage', function() {
         isDragging = false;
-        context.beginPath();
+        clientContext.beginPath();
     });
 
     socket.on('chat message', createChatBubble);
 
     socket.on('clear', function () {
-            context.clearRect(0, 0, canvas.width, canvas.height);
+            clientContext.clearRect(0, 0, canvas.width, canvas.height);
     });
 
     socket.on('color', function(color) {
-        context.globalCompositeOperation = "source-over";
-        context.strokeStyle = color;
-        context.fillStyle = color;
+        clientContext.globalCompositeOperation = "source-over";
+        clientContext.strokeStyle = color;
+        clientContext.fillStyle = color;
         m_color = color;
     });
 
     socket.on('size', function(size) {
         m_size = size;
-        context.lineWidth = m_size *2;
+        clientContext.lineWidth = m_size *2;
     });
 
     socket.on('eraser', function() {
-        context.globalCompositeOperation = "destination-out";
-        context.strokeStyle = "rgba(0, 0, 0, 1)";
-        context.lineWidth = m_size * 2;
+        clientContext.globalCompositeOperation = "destination-out";
+        clientContext.strokeStyle = "rgba(0, 0, 0, 1)";
+        clientContext.lineWidth = m_size * 2;
     });
 });
 
 function itemClick(e) {
     switch (e.target.id) {
         case 'item-trash':
-            context.clearRect(0, 0, canvas.width, canvas.height);
+            clientContext.clearRect(0, 0, canvas.width, canvas.height);
             socket.emit('clear');
             break;
         case 'item-eraser':
@@ -160,52 +166,52 @@ function itemClick(e) {
                     element.style.border = "";
             });
 
-            context.globalCompositeOperation = "destination-out";
-            context.strokeStyle = "rgba(0,0,0,1)";
-            context.lineWidth = (m_size) * 2;
+            clientContext.globalCompositeOperation = "destination-out";
+            clientContext.strokeStyle = "rgba(0,0,0,1)";
+            clientContext.lineWidth = (m_size) * 2;
             socket.emit('eraser');
             break;
         case 'item-color-blue':
-            context.globalCompositeOperation = "source-over";
+            clientContext.globalCompositeOperation = "source-over";
             m_color = "#0000cd";
-            context.strokeStyle = m_color;
-            context.fillStyle = m_color;
+            clientContext.strokeStyle = m_color;
+            clientContext.fillStyle = m_color;
             socket.emit('color', m_color);
             break;
         case 'item-color-red':
-            context.globalCompositeOperation = "source-over";
+            clientContext.globalCompositeOperation = "source-over";
             m_color = "#b22222";
-            context.strokeStyle = m_color;
-            context.fillStyle = m_color;
+            clientContext.strokeStyle = m_color;
+            clientContext.fillStyle = m_color;
             socket.emit('color', m_color);
             break;
         case 'item-color-green':
-            context.globalCompositeOperation = "source-over";
+            clientContext.globalCompositeOperation = "source-over";
             m_color = "#228b22";
-            context.strokeStyle = m_color;
-            context.fillStyle = m_color;
+            clientContext.strokeStyle = m_color;
+            clientContext.fillStyle = m_color;
             socket.emit('color', m_color);
             break;
         case 'item-color-black':
-            context.globalCompositeOperation = "source-over";
+            clientContext.globalCompositeOperation = "source-over";
             m_color = "#000000";
-            context.strokeStyle = m_color;
-            context.fillStyle = m_color;
+            clientContext.strokeStyle = m_color;
+            clientContext.fillStyle = m_color;
             socket.emit('color', m_color);
             break;
         case 'item-size-1':
             m_size = 2;
-            context.lineWidth = m_size * 2;
+            clientContext.lineWidth = m_size * 2;
             socket.emit('size', m_size);
             break;
         case 'item-size-2':
             m_size = 4;
-            context.lineWidth = m_size * 2;
+            clientContext.lineWidth = m_size * 2;
             socket.emit('size', m_size);
             break;
         case 'item-size-3':
             m_size = 6;
-            context.lineWidth = m_size * 2;
+            clientContext.lineWidth = m_size * 2;
             socket.emit('size', m_size);
             break;
     }
@@ -249,25 +255,43 @@ function engage(e) {
     isDragging = true;
     var data = {
         x: e.clientX,
-        y: e.clientY
+        y: e.clientY,
+        z: clientContext.lineWidth,
+        a: clientContext.strokeStyle,
+        b: clientContext.fillStyle
     }
     socket.emit('mouse', data);
-    drawPoint(data);
+    drawPoint(data, true);
 }
 
 function disengage() {
     isDragging = false;
-    context.beginPath();
+    clientContext.beginPath();
 
     socket.emit('disengage');
 }
 
-function drawPoint(data) {
-    context.lineTo(data.x, data.y);
-    context.stroke();
-    context.beginPath();
-    context.arc(data.x, data.y, m_size, 0, Math.PI * 2);
-    context.fill();
-    context.beginPath();
-    context.moveTo(data.x, data.y);
+function drawPoint(data, isClient = false) {
+    if (isClient) {
+        clientContext.lineTo(data.x, data.y);
+        clientContext.stroke();
+        clientContext.beginPath();
+        clientContext.arc(data.x, data.y, m_size, 0, Math.PI * 2);
+        clientContext.fill();
+        clientContext.beginPath();
+        clientContext.moveTo(data.x, data.y);
+    }
+    else {
+        serverContext.lineWidth = data.z;
+        serverContext.strokeStyle = data.a;
+        serverContext.fillStyle = data.b;
+
+        serverContext.lineTo(data.x, data.y);
+        serverContext.stroke();
+        serverContext.beginPath();
+        serverContext.arc(data.x, data.y, m_size, 0, Math.PI * 2);
+        serverContext.fill();
+        serverContext.beginPath();
+        serverContext.moveTo(data.x, data.y);
+    }
 }
