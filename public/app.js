@@ -234,10 +234,10 @@ function createChatBubble(data, isClient = false) {
         //TODO: Add more differentiability between client and non-client chat bubbles.
         chatBubble.style.backgroundColor = "#3dc476";
         chatBubble.style.cssFloat = "right";
-        chatBubble.style.marginLeft = (document.getElementById("chat-window").style.width - chatBubble.style.width).toString() + "px";
+        chatBubble.style.marginLeft = (300 - chatBubble.style.minWidth).toString() + "px";
     } else {
         chatBubble.style.cssFloat = "left";
-        chatBubble.style.marginRight = (document.getElementById("chat-window").style.width - chatBubble.style.width).toString() + "px";
+        chatBubble.style.marginRight = (300 - chatBubble.style.minWidth).toString() + "px";
     }
 
     document.getElementById("chat-output").appendChild(chatBubble);
