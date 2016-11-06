@@ -136,6 +136,12 @@ $(document).ready(function() {
         clientContext.clearRect(0, 0, canvas.width, canvas.height);
         serverContext.clearRect(0, 0, serverCanvas.width, serverCanvas.height);
     });
+
+    socket.on('eraser', function() {
+        clientContext.globalCompositeOperation = "destination-out";
+        clientContext.strokeStyle = "rgba(0,0,0,1)";
+        clientContext.lineWidth = (m_size) * 2;
+    });
 });
 
 function itemClick(e) {
