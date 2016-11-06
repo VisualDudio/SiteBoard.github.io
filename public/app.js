@@ -1,6 +1,7 @@
 var socket;
 var isDragging = false;
 var canvas;
+var serverCanvas;
 var m_size = 2;
 var m_color = '#000000';
 var clientContext, serverContext;
@@ -8,10 +9,14 @@ var clientContext, serverContext;
 function init() {
     canvas = document.getElementById("canvas");
     clientContext = canvas.getContext('2d');
-    serverContext = canvas.getContext('2d');
+    serverCanvas = document.getElementById("server-canvas");
+    serverContext = serverCanvas.getContext('2d');
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    serverCanvas.width = window.innerWidth;
+    serverCanvas.height = window.innerHeight;
+
     clientContext.lineWidth = m_size * 2;
     clientContext.strokeStyle = m_color;
     clientContext.fillStyle = m_color;
