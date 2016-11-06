@@ -16,6 +16,10 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.emit('mouse', data);
     });
 
+    socket.on('disengage', function () {
+        socket.broadcast.emit('disengage');
+    });
+
     socket.on('chat message', function (data) {
         socket.broadcast.emit('chat message', data);
     });

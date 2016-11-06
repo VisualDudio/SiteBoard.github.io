@@ -119,6 +119,10 @@ $(document).ready(function() {
     socket = io.connect('https://siteboard.herokuapp.com');
 
     socket.on('mouse', drawPoint);
+    socket.on('disengage', function() {
+        isDragging = false;
+        clientContext.beginPath();
+    });
 
     socket.on('chat message', createChatBubble);
 
@@ -263,6 +267,8 @@ function engage(e) {
 function disengage() {
     isDragging = false;
     clientContext.beginPath();
+
+    socket.emit('disengage');
 }
 
 function drawPoint(data, isClient = false) {
