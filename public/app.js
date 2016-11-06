@@ -268,7 +268,6 @@ function engage(e) {
     drawPoint(data, true);
     if (clientContext.globalCompositeOperation == "destination-out") {
          drawPoint(data, false);
-         socket.emit('eraser-mouse', data);
     }
 }
 
