@@ -125,28 +125,6 @@ $(document).ready(function() {
     });
 
     socket.on('chat message', createChatBubble);
-
-    socket.on('clear', function () {
-            clientContext.clearRect(0, 0, canvas.width, canvas.height);
-    });
-
-    socket.on('color', function(color) {
-        clientContext.globalCompositeOperation = "source-over";
-        clientContext.strokeStyle = color;
-        clientContext.fillStyle = color;
-        m_color = color;
-    });
-
-    socket.on('size', function(size) {
-        m_size = size;
-        clientContext.lineWidth = m_size *2;
-    });
-
-    socket.on('eraser', function() {
-        clientContext.globalCompositeOperation = "destination-out";
-        clientContext.strokeStyle = "rgba(0, 0, 0, 1)";
-        clientContext.lineWidth = m_size * 2;
-    });
 });
 
 function itemClick(e) {
@@ -256,9 +234,7 @@ function engage(e) {
     var data = {
         x: e.clientX,
         y: e.clientY,
-        z: clientContext.lineWidth,
-        a: clientContext.strokeStyle,
-        b: clientContext.fillStyle
+        z: clientContext
     }
     socket.emit('mouse', data);
     drawPoint(data, true);
@@ -282,10 +258,8 @@ function drawPoint(data, isClient = false) {
         clientContext.moveTo(data.x, data.y);
     }
     else {
-        serverContext.lineWidth = data.z;
-        serverContext.strokeStyle = data.a;
-        serverContext.fillStyle = data.b;
-
+        serverContext = data.z;
+        
         serverContext.lineTo(data.x, data.y);
         serverContext.stroke();
         serverContext.beginPath();
