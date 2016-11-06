@@ -258,7 +258,6 @@ function disengage() {
 
 function drawPoint(data, isClient = false) {
     if (isClient) {
-        console.log(clientContext.strokeStyle);
         clientContext.lineTo(data.x, data.y);
         clientContext.stroke();
         clientContext.beginPath();
