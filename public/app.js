@@ -27,14 +27,20 @@ $(document).ready(function() {
     window.addEventListener('resize', init, false);
 
     $('#canvas').mousedown(engage);
+    $('#canvas').touchstart(engage);
 
     $('#canvas').mousemove(function(e) {
         if (isDragging)
             engage(e);
     });
 
+    $('#canvas').touchmove(function(e) {
+        if (isDragging)
+            engage(e);
+    });
+    
     $('#canvas').mouseup(disengage);
-
+    $('#canvas').touchend(disengage);
     $('#canvas').mouseleave(disengage);
 
     $('.item').click(itemClick);
