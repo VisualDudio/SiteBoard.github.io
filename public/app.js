@@ -26,22 +26,13 @@ $(document).ready(function() {
     init();
     window.addEventListener('resize', init, false);
 
-    $('#canvas').mousedown(engage);
-    $('#canvas').touchstart(engage);
-
-    $('#canvas').mousemove(function(e) {
-        if (isDragging)
-            engage(e);
-    });
-
-    $('#canvas').touchmove(function(e) {
+    $('#canvas').bind('touchstart mousedown', engage);
+    $('#canvas').bind('touchmove mousemove', function(e) {
         if (isDragging)
             engage(e);
     });
     
-    $('#canvas').mouseup(disengage);
-    $('#canvas').touchend(disengage);
-    $('#canvas').mouseleave(disengage);
+    $('#canvas').bind('touchend mouseup mouseleave', disengage);
 
     $('.item').click(itemClick);
 
